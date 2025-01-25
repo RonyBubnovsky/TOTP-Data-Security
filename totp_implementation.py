@@ -140,7 +140,7 @@ def test_with_rfc_vectors():
 root = tk.Tk()
 root.title("TOTP Generator and Verifier")
 root.geometry("400x450")
-root.resizable(False, False)
+
 
 # TOTP Display
 totp_label = tk.Label(root, text="TOTP Code: ", font=("Arial", 16))

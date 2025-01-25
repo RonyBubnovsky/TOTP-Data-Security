@@ -166,7 +166,7 @@ rfc_output_label = tk.Label(root, text="", font=("Arial", 10), justify="left", a
 rfc_output_label.pack(pady=10, fill="x", padx=10)
 
 # Test with RFC Button
-test_button = tk.Button(root, text="Test with RFC Vectors", font=("Arial", 12), command=test_with_rfc_vectors)
+test_button = tk.Button(root, text="Test with official RFC 628 Vectors", font=("Arial", 12), command=test_with_rfc_vectors)
 test_button.pack(pady=10)
 
 # Start the TOTP updater

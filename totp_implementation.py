@@ -1,3 +1,7 @@
+
+
+
+
 import hmac
 import hashlib
 import time
@@ -8,18 +12,11 @@ from tkinter import messagebox
 
 # Shared Secret Key (Base32-encoded for easier handling)
 SECRET_KEY = "JBSWY3DPEHPK3PXP"  # Example shared secret key (Google Authenticator-compatible)
-
+totp_code = None  # Global variable to store the current TOTP code
 
 def generate_totp(secret_key, time_step=30, digits=6, current_time=None):
     """
     Generate a TOTP code based on the shared secret and current time.
-    Args:
-        secret_key (str): Base32-encoded secret key.
-        time_step (int): Time step in seconds (default: 30 seconds).
-        digits (int): Number of digits in the TOTP (default: 6).
-        current_time (int): Custom time for testing (default: None uses current time).
-    Returns:
-        str: Generated TOTP code.
     """
     if current_time is None:
         current_time = int(time.time())
@@ -49,6 +46,34 @@ def generate_totp(secret_key, time_step=30, digits=6, current_time=None):
     # Return the TOTP code as a zero-padded string
     return str(totp_code).zfill(digits)
 
+def update_totp():
+    """
+    Update the TOTP display and countdown timer in the GUI.
+    """
+    global totp_label, timer_label, totp_code
+
+    # Generate the current TOTP code
+    totp_code = generate_totp(SECRET_KEY)
+    totp_label.config(text=f"TOTP Code: {totp_code}")
+
+    # Calculate remaining time in the current time step
+    time_remaining = 30 - (int(time.time()) % 30)
+    timer_label.config(text=f"Time Remaining: {time_remaining}s")
+
+    # Schedule the next update (every 200ms)
+    root.after(200, update_totp)
+
+def submit_code():
+    """
+    Handle user input and verify the TOTP code.
+    """
+    global totp_code
+    user_input = entry.get()
+    if user_input == totp_code:
+        messagebox.showinfo("Verification", "TOTP verification successful! ✅")
+        root.destroy()  # Close the GUI after successful verification
+    else:
+        messagebox.showerror("Verification", "TOTP verification failed. ❌")
 
 def verify_totp(input_code, secret_key, time_step=30, digits=6, allowed_drift=1):
     """
@@ -64,7 +89,7 @@ def verify_totp(input_code, secret_key, time_step=30, digits=6, allowed_drift=1)
         truncated_hash = hmac_hash[offset:offset + 4]
         code = struct.unpack(">I", truncated_hash)[0] & 0x7FFFFFFF
         totp_code = str(code % (10 ** digits)).zfill(digits)
-        if totp_code == input_code:
+        if totp_code == input_code:  # 111   222
             return True
     return False
 
@@ -115,37 +140,6 @@ def test_with_rfc_vectors():
         print("\nSome tests failed. Check your implementation.")
 
 
-# GUI Functionality
-def update_totp():
-    """
-    Update the TOTP display and countdown timer in the GUI.
-    """
-    global totp_label, timer_label
-
-    # Generate the current TOTP code
-    totp_code = generate_totp(SECRET_KEY)
-    totp_label.config(text=f"TOTP Code: {totp_code}")
-
-    # Calculate remaining time in the current time step
-    time_remaining = 30 - (int(time.time()) % 30)
-    timer_label.config(text=f"Time Remaining: {time_remaining}s")
-
-    # Schedule the next update (every 200ms)
-    root.after(200, update_totp)
-
-
-def submit_code():
-    """
-    Handle user input and verify the TOTP code.
-    """
-    user_input = entry.get()
-    if verify_totp(user_input, SECRET_KEY):
-        messagebox.showinfo("Verification", "TOTP verification successful! ✅")
-        root.destroy()  # Close the GUI after successful verification
-    else:
-        messagebox.showerror("Verification", "TOTP verification failed. ❌")
-
-
 # Create the GUI
 root = tk.Tk()
 root.title("TOTP Generator and Verifier")
@@ -170,9 +164,6 @@ entry.pack(pady=5)
 # Submit Button
 submit_button = tk.Button(root, text="Verify", font=("Arial", 12), command=submit_code)
 submit_button.pack(pady=20)
-
-# Run the RFC test vectors
-test_with_rfc_vectors()
 
 # Start the TOTP updater
 update_totp()

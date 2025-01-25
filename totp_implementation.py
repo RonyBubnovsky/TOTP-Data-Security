@@ -93,7 +93,7 @@ def test_with_rfc_vectors():
     """
     Test the TOTP implementation using the official RFC 6238 test vectors.
     """
-    output = "Testing with RFC 6238 Test Vectors...\n"
+    print("Testing with RFC 6238 Test Vectors...\n")
 
     # RFC 6238 test vectors
     test_vectors = [

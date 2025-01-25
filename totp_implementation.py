@@ -93,7 +93,7 @@ def test_with_rfc_vectors():
     """
     Test the TOTP implementation using the official RFC 6238 test vectors.
     """
-    print("Testing with RFC 6238 Test Vectors...\n")
+    output = "Testing with RFC 6238 Test Vectors...\n"
 
     # RFC 6238 test vectors
     test_vectors = [
@@ -139,7 +139,7 @@ def test_with_rfc_vectors():
 # Create the GUI
 root = tk.Tk()
 root.title("TOTP Generator and Verifier")
-root.geometry("600x400")
+root.geometry("400x450")
 root.resizable(False, False)
 
 # TOTP Display

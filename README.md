@@ -66,7 +66,7 @@ pip install -r requirements.txt
 Start the TOTP application:
 
 ```bash
-python totp_gui_with_exit.py
+python totp_implementation.py
 ```
 
 ## Usage
@@ -88,7 +88,7 @@ Click the "Verify" button to validate the code.
 
 ## Project Files
 
-- `totp_gui_with_exit.py`: Main Python script containing the TOTP implementation and Tkinter GUI.
+- `totp_implementation.py`: Main Python script containing the TOTP implementation and Tkinter GUI.
 - `requirements.txt`: File listing any dependencies required to run the project.
 - `.gitignore`: File specifying which files and folders (like `venv/`) to exclude from version control.
 

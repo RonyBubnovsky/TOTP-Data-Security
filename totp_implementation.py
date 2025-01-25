@@ -1,7 +1,3 @@
-
-
-
-
 import hmac
 import hashlib
 import time
@@ -93,12 +89,11 @@ def verify_totp(input_code, secret_key, time_step=30, digits=6, allowed_drift=1)
             return True
     return False
 
-
 def test_with_rfc_vectors():
     """
     Test the TOTP implementation using the official RFC 6238 test vectors.
     """
-    print("Testing with RFC 6238 Test Vectors...\n")
+    output = "Testing with RFC 6238 Test Vectors...\n\n"
 
     # RFC 6238 test vectors
     test_vectors = [
@@ -128,22 +123,23 @@ def test_with_rfc_vectors():
         generated_totp = generate_totp(
             vector["secret"], time_step=30, digits=vector["digits"], current_time=vector["time"]
         )
-        print(f"Time: {vector['time']}, Expected: {vector['expected']}, Generated: {generated_totp}")
+        output += f"Time: {vector['time']}, Expected: {vector['expected']}, Generated: {generated_totp}\n"
 
         if generated_totp != vector["expected"]:
-            print("Test failed!\n")
+            output += "Test failed!\n\n"
             all_tests_passed = False
 
     if all_tests_passed:
-        print("\nAll RFC 6238 test vector tests passed!")
+        output += "\nAll RFC 6238 test vector tests passed!\n"
     else:
-        print("\nSome tests failed. Check your implementation.")
+        output += "\nSome tests failed. Check your implementation.\n"
 
+    rfc_output_label.config(text=output)
 
 # Create the GUI
 root = tk.Tk()
 root.title("TOTP Generator and Verifier")
-root.geometry("400x300")
+root.geometry("600x400")
 root.resizable(False, False)
 
 # TOTP Display
@@ -164,6 +160,14 @@ entry.pack(pady=5)
 # Submit Button
 submit_button = tk.Button(root, text="Verify", font=("Arial", 12), command=submit_code)
 submit_button.pack(pady=20)
+
+# RFC Test Output Label
+rfc_output_label = tk.Label(root, text="", font=("Arial", 10), justify="left", anchor="w")
+rfc_output_label.pack(pady=10, fill="x", padx=10)
+
+# Test with RFC Button
+test_button = tk.Button(root, text="Test with RFC Vectors", font=("Arial", 12), command=test_with_rfc_vectors)
+test_button.pack(pady=10)
 
 # Start the TOTP updater
 update_totp()

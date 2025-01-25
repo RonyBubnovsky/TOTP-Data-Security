@@ -27,8 +27,8 @@ Follow these steps to set up and run the project:
 First, clone this repository to your local system:
 
 ```bash
-git clone https://github.com/your-username/totp-project.git
-cd totp-project
+git clone https://github.com/RonyBubnovsky/TOTP-Data-Security.git
+cd TOTP-Data-Security
 ```
 
 ### 2. Create a Virtual Environment

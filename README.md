@@ -1,136 +1,115 @@
-# TOTP Generator and Verifier (Data Security Final Project)
+# TOTP Generator and Verifier
 
-A Python-based Time-Based One-Time Password (TOTP) generator and verifier with a Tkinter GUI. The project demonstrates how TOTP, as defined in RFC 6238, can be implemented for secure user authentication. It includes a live countdown timer, dynamic TOTP generation, and user code validation.
-
-This project was created as the final project for a Data Security course.
+A Python-based Time-Based One-Time Password (TOTP) generator and verifier with a Tkinter GUI. The project demonstrates how TOTP, as defined in RFC 6238, can be implemented for secure user authentication. It includes a live countdown timer, dynamic TOTP generation, detailed generation steps visualization, and built-in RFC test vectors.
 
 ## Features
 
-- TOTP generation using a shared secret key and time synchronization.
+- TOTP generation using a shared secret key and time synchronization
 - User-friendly Tkinter GUI with:
-  - Real-time TOTP code display.
-  - Countdown timer indicating the time left for the current TOTP code.
-  - User input verification with success and failure notifications.
-- Fully documented Python implementation.
+  - Real-time TOTP code display
+  - Countdown timer indicating time remaining for current code
+  - User input verification with success/failure notifications
+  - Detailed step-by-step TOTP generation visualization
+  - Built-in RFC 6238 test vector verification
+- Two-tab interface:
+  - Main tab for code generation and verification
+  - Details tab showing all intermediate TOTP calculation steps
+- Support for RFC 6238 compliance testing
+- Constant-time comparison for secure code verification
 
 ## Prerequisites
 
-- Python 3.7 or later installed on your system.
-- Basic familiarity with Python and virtual environments (optional but recommended).
+- Python 3.7 or later
 
-## Setup and Installation
+## Installation
 
-Follow these steps to set up and run the project:
-
-### 1. Clone the Repository
-
-First, clone this repository to your local system:
-
+1. Clone the repository:
 ```bash
-git clone https://github.com/RonyBubnovsky/TOTP-Data-Security.git
-cd TOTP-Data-Security
+git clone [repository-url]
+cd totp-implementation
 ```
 
-### 2. Create a Virtual Environment
-
-It is recommended to create a virtual environment to isolate project dependencies:
-
+2. Create and activate a virtual environment (optional but recommended):
 ```bash
+# Create virtual environment
 python -m venv venv
-```
 
-Activate the virtual environment:
-
-On Windows:
-
-```bash
+# Activate on Windows
 venv\Scripts\activate
-```
 
-On macOS/Linux:
-
-```bash
+# Activate on macOS/Linux
 source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+3. No additional dependencies required - all libraries used are part of Python's standard library
 
-Install the required dependencies listed in the `requirements.txt` file:
+## Usage
 
-```bash
-pip install -r requirements.txt
-```
-
-### 4. Run the Application
-
-Start the TOTP application:
-
+Run the application:
 ```bash
 python totp_implementation.py
 ```
 
-## Usage
+### Main Tab
+- Displays current TOTP code in large font
+- Shows countdown timer for code expiration
+- Provides input field for code verification
+- Includes RFC test vector verification button
 
-### Launch the GUI:
+### Details Tab
+Displays real-time information about the TOTP generation process:
+- Secret Key (Base32 encoded)
+- Decoded Secret (in hexadecimal)
+- Time Counter value
+- Time Bytes (in hexadecimal)
+- HMAC-SHA1 Hash
+- Dynamic Truncation Offset
+- Truncated Hash value
+- Intermediate Code value
+- Final TOTP Code
 
-The GUI will display the current TOTP code and a countdown timer showing how much time is left before the code expires.
+### Verification
+1. Enter the displayed TOTP code in the input field
+2. Click "Verify" button
+3. System will show success/failure message
+4. On success, application closes automatically
 
-### Enter the Code:
+### RFC Test Vectors
+Click "Test RFC Vectors" to run compliance tests against standard RFC 6238 test vectors.
 
-Enter the TOTP code displayed in the app into the input box.
+## Technical Implementation
 
-### Verify the Code:
+### TOTP Generation Process
+1. Base32 decode the secret key
+2. Calculate time counter (current time ÷ 30 seconds)
+3. Generate HMAC-SHA1 hash
+4. Perform dynamic truncation
+5. Convert to 6-digit code
 
-Click the "Verify" button to validate the code.
+### Security Features
+- Constant-time comparison for code verification
+- Time window tolerance for verification
+- Secure handling of secret keys
+- RFC 6238 compliance
 
-- If successful, the GUI will display a success message and close.
-- If the code is invalid or expired, an error message will be shown, and the GUI will remain open.
+## Code Structure
 
-## Project Files
-
-- `totp_implementation.py`: Main Python script containing the TOTP implementation and Tkinter GUI.
-- `requirements.txt`: File listing any dependencies required to run the project.
-- `.gitignore`: File specifying which files and folders (like `venv/`) to exclude from version control.
-
-## How TOTP Works
-
-### Secret Key Setup:
-
-The server and the user share a secret key during setup.
-
-### Code Generation:
-
-The TOTP algorithm combines the secret key and the current time (synchronized in 30-second intervals) to generate a unique 6-digit code.
-
-### Verification:
-
-The server calculates the expected TOTP code for the current time and compares it with the user’s input.
-
-TOTP ensures secure and time-sensitive authentication without requiring persistent connections or key exchanges.
-
-## Example GUI
-
-The GUI displays:
-
-- The current TOTP code.
-- A live countdown timer.
-- An input box for users to enter their TOTP code.
-- A button to verify the code.
+Main components:
+- `generate_totp()`: Core TOTP generation with detailed step tracking
+- `verify_code()`: Secure code verification with time window support
+- `update_interface()`: GUI update mechanism
+- `test_with_rfc_vectors()`: RFC compliance testing
+- Tkinter GUI implementation with tabbed interface
 
 ## Troubleshooting
 
-- **Tkinter not found**: Ensure Tkinter is installed. It is typically included with Python. If not:
-  ```bash
-  pip install tk
-  ```
-- **Code mismatch**: Ensure your system clock is synchronized with internet time to avoid discrepancies in TOTP generation.
-- **Dependencies not installing**: Double-check that the virtual environment is activated before running `pip install`.
+Common issues and solutions:
+- **Tkinter not found**: Ensure Python was installed with Tkinter support
+- **Clock synchronization**: System time must be accurate for correct TOTP generation
+- **Window doesn't close after verification**: Check if code matches within time window
 
-## Contributing
-
-If you’d like to contribute to this project, feel free to fork the repository and submit a pull request. All contributions are welcome!
 
 ## Acknowledgments
 
-- RFC 6238: Time-Based One-Time Password Algorithm.
-- Python’s standard libraries for making this project straightforward and efficient.
+- RFC 6238 specification
+- Python standard library

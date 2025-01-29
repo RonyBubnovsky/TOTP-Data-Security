@@ -26,7 +26,7 @@ A Python-based Time-Based One-Time Password (TOTP) generator and verifier with a
 1. Clone the repository:
 ```bash
 git clone https://github.com/RonyBubnovsky/TOTP-Data-Security
-cd totp-implementation
+cd TOTP-Data-Security
 ```
 
 2. Create and activate a virtual environment (optional but recommended):

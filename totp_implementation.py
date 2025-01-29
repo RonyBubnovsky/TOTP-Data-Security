@@ -83,9 +83,7 @@ def verify_code(user_input, secret_key=SECRET_KEY, window_size=1, time_step=30):
             window_totp['final_code'].encode('utf-8')
         ):
             return True
-        
-    print("verified")
-            
+                   
     return False
 
 def update_interface():

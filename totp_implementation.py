@@ -7,7 +7,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 
 # Shared Secret Key (Base32-encoded) used for the main TOTP display.
-# (This key is arbitrary and separate from the RFC test vectors.)
+# (This key is separate from the RFC test vectors.)
 SECRET_KEY = "JBSWY3DPEHPK3PXP"
 
 # Dictionary to store current TOTP generation details
@@ -120,7 +120,6 @@ def test_with_rfc_vectors():
     They are Base32-encoded before being passed to generate_totp.
     """
     test_vectors = [
-        # Time = 59 seconds (T = 1)
         {"time": 59, "algo": "SHA1",
          "secret": base64.b32encode(b"12345678901234567890").decode('utf-8'),
          "expected": "94287082", "digits": 8},
@@ -131,7 +130,6 @@ def test_with_rfc_vectors():
          "secret": base64.b32encode(b"1234567890123456789012345678901234567890123456789012345678901234").decode('utf-8'),
          "expected": "90693936", "digits": 8},
 
-        # Time = 1111111109 (2005-03-18 01:58:29 UTC; T = 0x00000000023523EC)
         {"time": 1111111109, "algo": "SHA1",
          "secret": base64.b32encode(b"12345678901234567890").decode('utf-8'),
          "expected": "07081804", "digits": 8},
@@ -142,7 +140,6 @@ def test_with_rfc_vectors():
          "secret": base64.b32encode(b"1234567890123456789012345678901234567890123456789012345678901234").decode('utf-8'),
          "expected": "25091201", "digits": 8},
 
-        # Time = 1111111111 (2005-03-18 01:58:31 UTC; T = 0x00000000023523ED)
         {"time": 1111111111, "algo": "SHA1",
          "secret": base64.b32encode(b"12345678901234567890").decode('utf-8'),
          "expected": "14050471", "digits": 8},
@@ -153,7 +150,6 @@ def test_with_rfc_vectors():
          "secret": base64.b32encode(b"1234567890123456789012345678901234567890123456789012345678901234").decode('utf-8'),
          "expected": "99943326", "digits": 8},
 
-        # Time = 1234567890 (2009-02-13 23:31:30 UTC; T = 0x000000000273EF07)
         {"time": 1234567890, "algo": "SHA1",
          "secret": base64.b32encode(b"12345678901234567890").decode('utf-8'),
          "expected": "89005924", "digits": 8},
@@ -164,7 +160,6 @@ def test_with_rfc_vectors():
          "secret": base64.b32encode(b"1234567890123456789012345678901234567890123456789012345678901234").decode('utf-8'),
          "expected": "93441116", "digits": 8},
 
-        # Time = 2000000000 (2033-05-18 03:33:20 UTC; T = 0x0000000003F940AA)
         {"time": 2000000000, "algo": "SHA1",
          "secret": base64.b32encode(b"12345678901234567890").decode('utf-8'),
          "expected": "69279037", "digits": 8},
@@ -175,7 +170,6 @@ def test_with_rfc_vectors():
          "secret": base64.b32encode(b"1234567890123456789012345678901234567890123456789012345678901234").decode('utf-8'),
          "expected": "38618901", "digits": 8},
 
-        # Time = 20000000000 (2603-10-11 11:33:20 UTC; T = 0x0000000027BC86AA)
         {"time": 20000000000, "algo": "SHA1",
          "secret": base64.b32encode(b"12345678901234567890").decode('utf-8'),
          "expected": "65353130", "digits": 8},
@@ -201,8 +195,6 @@ def test_with_rfc_vectors():
             f"Status: {'PASS ✅' if generated == vector['expected'] else 'FAIL ❌'}\n"
         )
         results.append(result)
-        # Also print each result to the terminal
-        print(result)
 
     messagebox.showinfo("RFC 6238 Test Results", "\n".join(results))
 

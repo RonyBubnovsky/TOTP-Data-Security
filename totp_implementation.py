@@ -58,16 +58,21 @@ def generate_totp(secret_key, time_step=30, digits=6, current_time=None, algo="S
     }
 
 
-def verify_code(user_input, secret_key=SECRET_KEY, window_size=1, time_step=30, algo="SHA1"):
-    """Verify a TOTP code by checking a small time window."""
+def verify_code(user_input, secret_key=SECRET_KEY, window_size=0, time_step=30, algo="SHA1"):
+    """
+    Verify a TOTP code by checking only the current time window.
+    
+    By setting window_size to 0 (default), only the TOTP for the current time period is accepted.
+    """
     if not user_input.isdigit():
         return False
 
     current_time = int(time.time())
+    # With window_size=0, this loop only iterates once (offset=0)
     for time_offset in range(-window_size, window_size + 1):
         check_time = current_time + (time_offset * time_step)
-        window_totp = generate_totp(secret_key, time_step, current_time=check_time, algo=algo)
-        if hmac.compare_digest(user_input.encode('utf-8'), window_totp['final_code'].encode('utf-8')):
+        totp = generate_totp(secret_key, time_step, current_time=check_time, algo=algo)
+        if hmac.compare_digest(user_input.encode('utf-8'), totp['final_code'].encode('utf-8')):
             return True
     return False
 

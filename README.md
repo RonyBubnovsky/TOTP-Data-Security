@@ -87,6 +87,14 @@ To run these tests:
 2. Click **"Test RFC Vectors"**
 3. The results will display in a message box, showing pass/fail for each test case.
 
+## Contributing
+Contributions are welcome! 🎉 If you have ideas, bug fixes, or improvements, feel free to **fork** this repository and submit a **pull request**. Please ensure that your contributions align with the project's goals and follow best practices.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+
 
 
 

@@ -87,7 +87,6 @@ To run these tests:
 2. Click **"Test RFC Vectors"**
 3. The results will display in a message box, showing pass/fail for each test case.
 
-## License
-This project is **open-source** and released under the MIT License.
+
 
 
